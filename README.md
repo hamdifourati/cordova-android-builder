@@ -2,7 +2,9 @@
 ---
 > Build Cordova applications inside a docker container
 
-> TODO: Upload docker image to docker hub and provide instructions to pull it and use.
+
+## Docker repository
+https://hub.docker.com/r/hamdifourati/cordova-android-builder/
 
 ## Requirements
 - Docker
@@ -17,6 +19,12 @@
 - Android 22
 
 ## How to
+## Pull image from Docker hub
+
+```
+docker pull cordova-android-builder
+```
+
 ### Build Dockerfile
 ```
 docker build -t cordova-android-builder .
