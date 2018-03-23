@@ -23,7 +23,7 @@ RUN npm i -g cordova@5.1.1
 
 # Install Android
 RUN \
-  apt-get -qq install -y lib32stdc++6 lib32z1
+  apt-get -qq install -y lib32stdc++6 lib32z1 git
 
 # download and extract android sdk
 ADD http://dl.google.com/android/android-sdk_r24.2-linux.tgz /usr/local/
@@ -35,6 +35,8 @@ ENV PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 # update and accept licences
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /usr/local/android-sdk-linux/tools/android update sdk --no-ui -a --filter platform-tool,build-tools-22.0.1,android-22;
 RUN find /usr/local/android-sdk-linux -perm 0744 | xargs chmod 755
+
+ADD ./license.tgz /usr/local/android-sdk-linux/
 
 ENV GRADLE_USER_HOME /src/gradle
 # Run this fo rhello-world app
