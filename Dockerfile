@@ -1,42 +1,33 @@
-FROM ubuntu:16.04
-# Install Java.
+FROM openjdk:8
 
-RUN apt-get -qq update && \
-  apt-get -qq install -y software-properties-common python-software-properties
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get -qq update && \
-  apt-get -qq install -y curl oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
+LABEL maintainer="Hamdi Fourati <contact@hamdifourati.info>"
 
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+WORKDIR /opt/src
 
-# Install NodeJS
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get -qq install -y nodejs
+ENV JAVA_HOME /usr/local/openjdk-8/
+ENV ANDROID_SDK_ROOT /usr/local/android-sdk-linux
+ENV GRADLE_USER_HOME /opt/gradle
+ENV PATH $PATH:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$GRADLE_USER_HOME/bin
 
-# install cordova
-RUN npm i -g cordova@5.1.1
+# NodeJS
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt -qq install -y nodejs
 
-# Install Android
-RUN \
-  apt-get -qq install -y lib32stdc++6 lib32z1
+# Cordova
+RUN npm i -g cordova@10.0.0
 
-# download and extract android sdk
-ADD http://dl.google.com/android/android-sdk_r24.2-linux.tgz /usr/local/
-RUN tar xavf /usr/local/android-sdk_r24.2-linux.tgz -C /usr/local/ && \
-  rm  /usr/local/android-sdk_r24.2-linux.tgz
-ENV ANDROID_HOME /usr/local/android-sdk-linux
-ENV PATH $PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+# Gradle
+RUN curl -so /tmp/gradle-6.8.2-bin.zip https://downloads.gradle-dn.com/distributions/gradle-6.8.2-bin.zip && \
+    unzip -qd /opt /tmp/gradle-6.8.2-bin.zip && \
+    ln -s /opt/gradle-6.8.2 /opt/gradle
 
-# update and accept licences
-RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /usr/local/android-sdk-linux/tools/android update sdk --no-ui -a --filter platform-tool,build-tools-22.0.1,android-22;
-RUN find /usr/local/android-sdk-linux -perm 0744 | xargs chmod 755
+# Android
+RUN curl -so /tmp/commandlinetools-linux-6858069_latest.zip https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip && \
+    mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/ && \
+    unzip -qd $ANDROID_SDK_ROOT/cmdline-tools/ /tmp/commandlinetools-linux-6858069_latest.zip && \
+    mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
 
-ENV GRADLE_USER_HOME /src/gradle
-# Run this fo rhello-world app
-#RUN  cd /usr/lib/node_modules/cordova/node_modules/cordova-lib/ && npm install && cd -
-WORKDIR /src
+
+# Update and accept licences
+COPY android.packages android.packages
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | sdkmanager --package_file=android.packages
