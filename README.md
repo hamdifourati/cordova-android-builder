@@ -1,6 +1,6 @@
 # Build Cordova Application in Docker
 ---
-> Build Cordova applications inside a docker container
+Use docker to build cordova applications. For local development, testing, CI/CD...
 
 
 ## Docker repository
@@ -10,42 +10,58 @@ https://hub.docker.com/r/hamdifourati/cordova-android-builder/
 - Docker
 
 ## Installed dependencies
-- Ubuntu v16.04
-- NodeJS v8.9.4
-- Cordova v5.1.1
+- NodeJS v14 LTS
+- Cordova v10.0.0
 - Android SDK r24.2
 - Android Platform Tools
-- Android Build Tools 22.0.1
-- Android 22
+- Android Build Tools 29.0.3
+- Android 29
 
 ## How to
 ## Pull image from Docker hub
-
 ```
-docker pull cordova-android-builder
+docker pull hamdifourati/cordova-android-builder
 ```
-
-### Build Dockerfile
-```
-docker build -t cordova-android-builder .
-```
-
 ### Run Builder Container
 ```
-docker run -it -v <local-app-src>:/src cordova-android-builder bash
+# Check dependencies are installed and configured.
+docker run -v <local-app-src>:/opt/src --rm hamdifourati/cordova-android-builder cordova requirements
+
+# Build Android apk
+docker run -v <local-app-src>:/opt/src --rm hamdifourati/cordova-android-builder cordova build
 ```
 
-## Build Cordova App
-> Assuming you are inside the build container 
-
+## Interactive shell
+> Run a shell inside the conatiner
 ```
-# Add android for cordova
-cordova platform add android
+docker run -it -v <local-app-src>:/opt/src --rm hamdifourati/cordova-android-builder bash
 
-# Compile Android APK
-cordova prepare && cordova compile android
+root@cordova:/opt/src# cordova platform add android
+root@cordova:/opt/src# cordova requirements
+root@cordova:/opt/src# cordova build
 ```
+The Generated APK is in: `/opt/src/platforms/android/app/build/outputs/apk/`
 
-The Generated APK is in: `<cordova-ap-src-path>/platforms/android/build/outputs/apk/`
+## Install Android packages ( build-tools, platform-tools .. )
+> Note that this image uses [sdkmanager](https://developer.android.com/studio/command-line/sdkmanager) to manage android packages and comes with some default [packages](#installed-dependencies). You are more likely to need different versions.
+
+### Install using a custom Dockerfile
+```
+FROM hamdifourati/cordova-android-builder
+
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | sdkmanager "platforms;android-30"
+```
+### Install in interactive shell
+```
+# attach to your already running container
+docker exec -it <cordova-container-name> bash
+
+# Install & Accept linceses
+root@cordova:/opt/src# sdkmanager "platforms;android-30"
+```
+> You can always list available packages either inside the container or directly.
+```
+docker run -it --rm hamdifourati/cordova-android-builder sdkmanager --list
+```
 
 ### Enjoy !
