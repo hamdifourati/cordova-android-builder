@@ -10,12 +10,12 @@ https://hub.docker.com/r/hamdifourati/cordova-android-builder/
 - Docker
 
 ## Installed dependencies
-- NodeJS v14 LTS
-- Cordova v10.0.0
-- Android SDK r24.2
+- NodeJS v19 LTS
+- Cordova v11.0.0
+- Android SDK r32.
 - Android Platform Tools
-- Android Build Tools 29.0.3
-- Android 29
+- Android Build Tools 32.0.0
+- Android 32
 
 ## How to
 ## Pull image from Docker hub
@@ -49,7 +49,7 @@ The Generated APK is in: `/opt/src/platforms/android/app/build/outputs/apk/`
 ```
 FROM hamdifourati/cordova-android-builder
 
-RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | sdkmanager "platforms;android-30"
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | sdkmanager "platforms;android-32"
 ```
 ### Install in interactive shell
 ```
@@ -57,7 +57,7 @@ RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | sdkmanager "platforms
 docker exec -it <cordova-container-name> bash
 
 # Install & Accept linceses
-root@cordova:/opt/src# sdkmanager "platforms;android-30"
+root@cordova:/opt/src# sdkmanager "platforms;android-32"
 ```
 > You can always list available packages either inside the container or directly.
 ```
