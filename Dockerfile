@@ -1,24 +1,24 @@
 #https://hub.docker.com/_/openjdk
-ARG OPENJDK_VERSION=11
-FROM openjdk:${OPENJDK_VERSION}
+ARG OPENJDK_VERSION=17
+FROM eclipse-temurin:${OPENJDK_VERSION}
 
 # Reference default value
 ARG OPENJDK_VERSION
 #https://github.com/nodesource/distributions/blob/master/README.md
 ARG NODEJS_VERSION=20
 #https://gradle.org/releases/
-ARG GRADLE_VERSION=7.6.3
+ARG GRADLE_VERSION=8.7
 #https://www.npmjs.com/package/cordova?activeTab=versions
 ARG CORDOVA_VERSION=12.0.0
 #https://developer.android.com/studio#command-tools
-ARG ANDROID_CMDTOOLS_VERSION=9477386
+ARG ANDROID_CMDTOOLS_VERSION=11076708
 
 
 LABEL maintainer="Hamdi Fourati <contact@hamdifourati.info>"
 
 WORKDIR /opt/src
 
-ENV JAVA_HOME /usr/local/openjdk-${OPENJDK_VERSION}/
+ENV JAVA_HOME /opt/java/openjdk/
 ENV ANDROID_SDK_ROOT /usr/local/android-sdk-linux
 ENV ANDROID_HOME $ANDROID_SDK_ROOT
 ENV GRADLE_USER_HOME /opt/gradle
@@ -33,6 +33,7 @@ RUN apt -qq install -y nodejs
 RUN npm i -g cordova@${CORDOVA_VERSION}
 
 # Gradle
+RUN apt -qq install -y unzip
 RUN curl -so /tmp/gradle-${GRADLE_VERSION}-bin.zip https://downloads.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
     unzip -qd /opt /tmp/gradle-${GRADLE_VERSION}-bin.zip && \
     ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle
