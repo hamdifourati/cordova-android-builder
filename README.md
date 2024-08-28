@@ -13,8 +13,8 @@ https://hub.docker.com/r/hamdifourati/cordova-android-builder/
 - NodeJS v20 LTS
 - Cordova v12.0.0
 - Android Platform Tools
-- Android Build Tools 33.0.2
-- Android 33
+- Android Build Tools 34.0.0
+- Android 34
 
 ## How to
 ## Pull image from Docker hub
