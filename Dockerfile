@@ -24,6 +24,9 @@ ENV ANDROID_HOME $ANDROID_SDK_ROOT
 ENV GRADLE_USER_HOME /opt/gradle
 ENV PATH $PATH:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$GRADLE_USER_HOME/bin
 
+# Tools
+RUN apt update && apt -qq install -y git
+
 # NodeJS
 RUN echo https://deb.nodesource.com/setup_${NODEJS_VERSION}.x
 RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION}.x | bash -
