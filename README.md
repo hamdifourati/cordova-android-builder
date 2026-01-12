@@ -42,7 +42,7 @@ docker pull hamdifourati/cordova-android-builder:latest
 
 Or a specific version:
 ```
-docker pull hamdifourati/cordova-android-builder:12.0.0 # Example version
+docker pull hamdifourati/cordova-android-builder:cordova-13 # Example version
 ```
 
 #### 2. Build Your Cordova Android Project
@@ -113,9 +113,9 @@ We provide tags for different Cordova and Android SDK versions. It's recommended
 
 * `latest`: Points to the most recent stable build.
 
-* `android-34`: Corresponds to Cordova with Android 34.
+* `android-35`: Corresponds to Cordova with Android 35.
 
-* `cordova-12`: Corresponds to Cordova 12.
+* `cordova-13`: Corresponds to Cordova 13.
 
 * ...and more. Check the [Docker Hub page](https://hub.docker.com/r/hamdifourati/cordova-android-builder/tags) for a complete list of tags.
 

@@ -5,13 +5,13 @@ FROM eclipse-temurin:${OPENJDK_VERSION}
 # Reference default value
 ARG OPENJDK_VERSION
 #https://github.com/nodesource/distributions/blob/master/README.md
-ARG NODEJS_VERSION=20
+ARG NODEJS_VERSION=24
 #https://gradle.org/releases/
-ARG GRADLE_VERSION=8.7
+ARG GRADLE_VERSION=8.13
 #https://www.npmjs.com/package/cordova?activeTab=versions
-ARG CORDOVA_VERSION=12.0.0
+ARG CORDOVA_VERSION=13.0.0
 #https://developer.android.com/studio#command-tools
-ARG ANDROID_CMDTOOLS_VERSION=11076708
+ARG ANDROID_CMDTOOLS_VERSION=13114758
 
 
 LABEL maintainer="Hamdi Fourati <contact@hamdifourati.info>"
